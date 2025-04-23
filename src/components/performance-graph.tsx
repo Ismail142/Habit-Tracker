@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Label } from "./ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
-import { ChartContainer, ChartTooltip } from "./ui/chart"
 import {
   BarChart,
   Bar,
@@ -274,135 +273,131 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
 
                 <TabsContent value="bar" className="space-y-4">
                   <div className="h-[350px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm">
-                    <ChartContainer>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                          <defs>
-                            {habitStats.map((habit) => (
-                              <linearGradient key={habit.id} id={`gradient-${habit.id}`} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor={habit.gradientStart} stopOpacity={1} />
-                                <stop offset="100%" stopColor={habit.gradientEnd} stopOpacity={0.8} />
-                              </linearGradient>
-                            ))}
-                          </defs>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                          <XAxis
-                            dataKey="date"
-                            tick={{ fontSize: 12 }}
-                            tickFormatter={(value, index) => {
-                              return index % (timeRange === "7days" ? 1 : 5) === 0 ? value : ""
-                            }}
-                            stroke="#9ca3af"
-                          />
-                          <YAxis
-                            domain={[0, 1]}
-                            ticks={[0, 1]}
-                            stroke="#9ca3af"
-                            tickFormatter={(value) => (value === 1 ? "Yes" : "No")}
-                          />
-                          <ChartTooltip
-                            content={({ active, payload, label }) => {
-                              if (active && payload && payload.length) {
-                                return (
-                                  <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
-                                    <p className="font-medium mb-2">{label}</p>
-                                    {payload.map((entry, index) => {
-                                      const habit = habits.find((h) => h.id === entry.dataKey)
-                                      if (!habit) return null
-                                      return (
-                                        <div key={index} className="flex items-center gap-2 mb-1">
-                                          <div
-                                            className="w-3 h-3 rounded-full"
-                                            style={{
-                                              background: `linear-gradient(to right, ${habitStats.find((h) => h.id === habit.id)?.gradientStart}, ${habitStats.find((h) => h.id === habit.id)?.gradientEnd})`,
-                                            }}
-                                          />
-                                          <span className="text-sm">{habit.name}:</span>
-                                          <span className="text-sm font-medium">
-                                            {entry.value === 1 ? "Completed" : "Not Completed"}
-                                          </span>
-                                        </div>
-                                      )
-                                    })}
-                                  </div>
-                                )
-                              }
-                              return null
-                            }}
-                          />
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                        <defs>
                           {habitStats.map((habit) => (
-                            <Bar
-                              key={habit.id}
-                              dataKey={habit.id}
-                              name={habit.name}
-                              fill={`url(#gradient-${habit.id})`}
-                              barSize={timeRange === "7days" ? 30 : 15}
-                              radius={[4, 4, 0, 0]}
-                              animationDuration={1500}
-                            />
+                            <linearGradient key={habit.id} id={`gradient-${habit.id}`} x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stopColor={habit.gradientStart} stopOpacity={1} />
+                              <stop offset="100%" stopColor={habit.gradientEnd} stopOpacity={0.8} />
+                            </linearGradient>
                           ))}
-                        </BarChart>
-                      </ResponsiveContainer>
-                      <div className="flex flex-wrap justify-center gap-4 mt-4">
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis
+                          dataKey="date"
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(value, index) => {
+                            return index % (timeRange === "7days" ? 1 : 5) === 0 ? value : ""
+                          }}
+                          stroke="#9ca3af"
+                        />
+                        <YAxis
+                          domain={[0, 1]}
+                          ticks={[0, 1]}
+                          stroke="#9ca3af"
+                          tickFormatter={(value) => (value === 1 ? "Yes" : "No")}
+                        />
+                        <Tooltip
+                          content={({ active, payload, label }) => {
+                            if (active && payload && payload.length) {
+                              return (
+                                <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+                                  <p className="font-medium mb-2">{label}</p>
+                                  {payload.map((entry, index) => {
+                                    const habit = habits.find((h) => h.id === entry.dataKey)
+                                    if (!habit) return null
+                                    return (
+                                      <div key={index} className="flex items-center gap-2 mb-1">
+                                        <div
+                                          className="w-3 h-3 rounded-full"
+                                          style={{
+                                            background: `linear-gradient(to right, ${habitStats.find((h) => h.id === habit.id)?.gradientStart}, ${habitStats.find((h) => h.id === habit.id)?.gradientEnd})`,
+                                          }}
+                                        />
+                                        <span className="text-sm">{habit.name}:</span>
+                                        <span className="text-sm font-medium">
+                                          {entry.value === 1 ? "Completed" : "Not Completed"}
+                                        </span>
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                              )
+                            }
+                            return null
+                          }}
+                        />
                         {habitStats.map((habit) => (
-                          <div key={habit.id} className="flex items-center gap-2">
-                            <div
-                              className="w-3 h-3 rounded-full"
-                              style={{
-                                background: `linear-gradient(to right, ${habit.gradientStart}, ${habit.gradientEnd})`,
-                              }}
-                            />
-                            <span className="text-sm font-medium">{habit.name}</span>
-                          </div>
+                          <Bar
+                            key={habit.id}
+                            dataKey={habit.id}
+                            name={habit.name}
+                            fill={`url(#gradient-${habit.id})`}
+                            barSize={timeRange === "7days" ? 30 : 15}
+                            radius={[4, 4, 0, 0]}
+                            animationDuration={1500}
+                          />
                         ))}
-                      </div>
-                    </ChartContainer>
+                      </BarChart>
+                    </ResponsiveContainer>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      {habitStats.map((habit) => (
+                        <div key={habit.id} className="flex items-center gap-2">
+                          <div
+                            className="w-3 h-3 rounded-full"
+                            style={{
+                              background: `linear-gradient(to right, ${habit.gradientStart}, ${habit.gradientEnd})`,
+                            }}
+                          />
+                          <span className="text-sm font-medium">{habit.name}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="area" className="space-y-4">
                   <div className="h-[350px] bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm">
-                    <ChartContainer>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                          <defs>
-                            <linearGradient id="colorCompletion" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
-                            </linearGradient>
-                          </defs>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                          <XAxis
-                            dataKey="date"
-                            tick={{ fontSize: 12 }}
-                            tickFormatter={(value, index) => {
-                              return index % (timeRange === "7days" ? 1 : 5) === 0 ? value : ""
-                            }}
-                            stroke="#9ca3af"
-                          />
-                          <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} stroke="#9ca3af" />
-                          <Tooltip
-                            formatter={(value: any) => [`${value.toFixed(0)}%`, "Completion Rate"]}
-                            labelFormatter={(label) => `Date: ${label}`}
-                            contentStyle={{
-                              backgroundColor: "white",
-                              borderRadius: "8px",
-                              border: "1px solid #e5e7eb",
-                              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                            }}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="completionRate"
-                            name="Completion Rate"
-                            stroke="#8884d8"
-                            fillOpacity={1}
-                            fill="url(#colorCompletion)"
-                            animationDuration={1500}
-                          />
-                        </AreaChart>
-                      </ResponsiveContainer>
-                    </ChartContainer>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                        <defs>
+                          <linearGradient id="colorCompletion" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <XAxis
+                          dataKey="date"
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(value, index) => {
+                            return index % (timeRange === "7days" ? 1 : 5) === 0 ? value : ""
+                          }}
+                          stroke="#9ca3af"
+                        />
+                        <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} stroke="#9ca3af" />
+                        <Tooltip
+                          formatter={(value: any) => [`${value.toFixed(0)}%`, "Completion Rate"]}
+                          labelFormatter={(label) => `Date: ${label}`}
+                          contentStyle={{
+                            backgroundColor: "white",
+                            borderRadius: "8px",
+                            border: "1px solid #e5e7eb",
+                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="completionRate"
+                          name="Completion Rate"
+                          stroke="#8884d8"
+                          fillOpacity={1}
+                          fill="url(#colorCompletion)"
+                          animationDuration={1500}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
                   </div>
                   <div className="text-center text-sm text-gray-500 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
                     This chart shows the percentage of habits completed each day over time
@@ -572,4 +567,3 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
     </div>
   )
 }
-
