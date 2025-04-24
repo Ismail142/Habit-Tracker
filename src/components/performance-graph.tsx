@@ -93,25 +93,37 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
 
     // Calculate current streak
     let currentStreak = 0
+    
     const sortedDates = [...habit.completedDates]
       .map((date) => new Date(date))
       .sort((a, b) => b.getTime() - a.getTime()) // Sort descending
 
-    let checkDate = today
+    let checkDate = new Date();
+    let currentCheck = false;
+    
     for (const date of sortedDates) {
       if (isSameDay(date, checkDate)) {
         currentStreak++
         checkDate = new Date(checkDate.setDate(checkDate.getDate() - 1))
-      } else if (date < checkDate) {
+        currentCheck = true;
+
+
+      } 
+      else if ((date < checkDate) && !currentCheck) {
         // Skip ahead to this date
-        checkDate = date
+        // checkDate = date
         currentStreak++
-        checkDate = new Date(checkDate.setDate(checkDate.getDate() - 1))
-      } else {
+        checkDate = new Date(checkDate.setDate(checkDate.getDate() - 1));
+
+        
+      } 
+      else {
         // Gap found
         break
       }
     }
+
+  
 
     // Assign gradient colors
     const colorIndex = index % GRADIENT_COLORS.length
