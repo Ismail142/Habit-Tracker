@@ -44,7 +44,7 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), "yyyy-MM"))
   const [chartType, setChartType] = useState<"bar" | "area" | "summary">("bar")
 
-  const today = new Date()
+  const today = new Date();
 
   // Generate date range based on selected time range
   let dateRange: Date[]
@@ -175,7 +175,7 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
   })
 
   // Custom pie chart label
-  const renderCustomizedPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
+  const renderCustomizedPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
     const RADIAN = Math.PI / 180
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const x = cx + radius * Math.cos(-midAngle * RADIAN)
