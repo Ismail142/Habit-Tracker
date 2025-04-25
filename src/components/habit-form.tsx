@@ -53,6 +53,8 @@ export default function HabitForm({ onAddHabit, initialValues, buttonText = "Add
     }
   }
 
+  // onValueChange={(value: "daily" | "weekly")
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
       <div className="space-y-2">
@@ -86,7 +88,7 @@ export default function HabitForm({ onAddHabit, initialValues, buttonText = "Add
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
+              {/* <SelectItem value="weekly">Weekly</SelectItem> */}
             </SelectContent>
           </Select>
         </div>

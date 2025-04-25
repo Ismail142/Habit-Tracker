@@ -79,8 +79,8 @@ export default function HabitTracker() {
     <div className="space-y-8">
       <Tabs defaultValue="list" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="list">Habits</TabsTrigger>
-          <TabsTrigger value="stats">Statistics</TabsTrigger>
+          <TabsTrigger value="list" className="hover:cursor-pointer">Habits</TabsTrigger>
+          <TabsTrigger value="stats" className="hover:cursor-pointer">Statistics</TabsTrigger>
         </TabsList>
         <TabsContent value="list" className="space-y-6">
           <HabitForm onAddHabit={addHabit} />

@@ -42,7 +42,7 @@ const GRADIENT_COLORS = [
 export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
   const [timeRange, setTimeRange] = useState<"7days" | "30days" | "month">("30days")
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), "yyyy-MM"))
-  const [chartType, setChartType] = useState<"bar" | "area" | "summary">("bar")
+  const [, setChartType] = useState<"bar" | "area" | "summary">("bar")
 
   const today = new Date();
 
@@ -101,12 +101,12 @@ export default function PerformanceGraph({ habits }: PerformanceGraphProps) {
     let checkDate = new Date();
     let currentCheck = false;
     
+    
     for (const date of sortedDates) {
       if (isSameDay(date, checkDate)) {
         currentStreak++
         checkDate = new Date(checkDate.setDate(checkDate.getDate() - 1))
         currentCheck = true;
-
 
       } 
       else if ((date < checkDate) && !currentCheck) {
